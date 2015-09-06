@@ -4,18 +4,42 @@ var Cars = {
     },
     setup_datatables: function() {
         $(".dropdown-menu li").on("click", function() {
-            Cars.search_table('', oTable); //clear filters
+            //Cars.search_table('', oTable); //clear filters
             $(this).parent().children('li').removeClass('active');
             $(this).addClass('active');
-            $(this).parents(".input-group-btn").find('.btn').html(
+            $(this).parents(".input-group-btn").find('#dropdown_search').html(
                 $(this).text() + " <span class='caret'></span>"
             );
             $("#searchbox").val('');
         });
+        $("#clear_search").on("click", function() {
+            oTable
+                 .search( '' )
+                 .columns().search( '' )
+                 .draw();
+            $("#searchbox").val('');
+        });
         if ($('.datatables').length) {
-            var oTable = $('.datatables').DataTable({
+            $('.datatables tfoot th').each( function () {
+                var title = $('.datatables thead th').eq( $(this).index() ).text();
+                $(this).html( '<input type="text" placeholder="Search '+title+'" />' );
+            } );
+            oTable = $('.datatables').DataTable({
+                colReorder: true,
+                fixedHeader: true,
                 "sDom": '<"top"l>rt<"bottom"ip><"clear">' //this explicitely excludes the default search
             });
+            oTable.columns().every( function () {
+                var that = this;
+         
+                $( 'input', this.footer() ).on( 'keyup change', function () {
+                    if ( that.search() !== this.value ) {
+                        that
+                            .search( this.value )
+                            .draw();
+                    }
+                } );
+            } );
             $("#searchbox").keyup(function() {
                 Cars.search_table(this.value, oTable); //search column or whole table
             });

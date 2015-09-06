@@ -3,9 +3,9 @@
     <span>Cars</span>
   </h4>
 </div>
-<div class="input-group input-group-sm col-lg-2 pull-right" id="car-search">
+<div class="input-group input-group-sm col-lg-3 pull-right" id="car-search">
   <div class="input-group-btn">
-    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">Search All <span class="caret"></span></button>
+    <button type="button" class="btn btn-default dropdown-toggle" id='dropdown_search' data-toggle="dropdown">Search All <span class="caret"></span></button>
     <ul class="dropdown-menu" id="column_header" role="menu">
       <li value='-1' class="active"><%= link_to 'Search All','#' %></li>
       <li value='0'><%= link_to 'Make','#' %></li>
@@ -15,9 +15,9 @@
     </ul>
   </div>
   <%= text_field_tag 'search',nil, { class: 'form-control', id: 'searchbox'} %>
-  <span class="input-group-addon" id="search-info" data-container="body" data-toggle="popover" data-placement="top" data-trigger="focus" tabindex="0" data-content="search help info explaining how to smart search"><i class="glyphicon glyphicon-info-sign"></i></span>
+  <span class="input-group-addon" id="clear_search" data-container="body" tabindex="0" ><i class="glyphicon glyphicon-refresh"></i></span>
 </div>
-<table class="datatables">
+<table class="datatables table table-striped dt-responsive no-wrap" width="100%">
   <thead>
     <tr>
       <th>Make</th>
@@ -26,6 +26,14 @@
       <th>Color</th>
     </tr>
   </thead>
+  <tfoot>
+    <tr>
+      <th>Make</th>
+      <th>Model</th>
+      <th>Year</th>
+      <th>Color</th>
+    </tr>
+  </tfoot>
 
   <tbody>
     <% @cars.each do |car| %>
